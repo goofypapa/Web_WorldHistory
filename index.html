@@ -216,24 +216,24 @@
     })
 </script>
 <script>
-    var bili=(1080/window.screen.height);
+    var bili=(1080/window.screen.width);
     var bjWidth=11557/bili;
     var bjSize=document.getElementById("bj");
     // 图片容器的宽高
     var locationSize=document.getElementById("location");
     locationSize.style.width = bjWidth+'px';
-    locationSize.style.height = window.screen.height+'px';
+    locationSize.style.height = window.screen.width+'px';
     // container的宽高
     var container=document.getElementById("container");
     container.style.width = bjWidth+'px';
-    container.style.height = window.screen.height+'px';
+    container.style.height = window.screen.width+'px';
     // slide的宽高
     var slide=document.getElementById("slide");
     slide.style.width = bjWidth+'px';
-    slide.style.height = window.screen.height+'px';
+    slide.style.height = window.screen.width+'px';
     console.log(bjWidth);
     bjSize.style.width = bjWidth+'px';
-    bjSize.style.height = window.screen.height+'px';
+    bjSize.style.height = window.screen.width+'px';
     var imgWidth=$("#location img");
     console.log(imgWidth);
     function adaptation(obj) {
