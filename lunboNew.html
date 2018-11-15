@@ -20,7 +20,7 @@
             margin: 0;
             padding: 0;
             background: url("img/bj.jpg");
-            background-size: cover;
+            background-size: 100% 100%;
         }
         .swiper-container {
             width: 100%;
@@ -96,10 +96,19 @@
             font-size: 1.4rem;
             line-height: 2rem;
             text-align: justify;
-            height: 17rem;
+            height: 70%;
             overflow-y: auto;
 
         }
+        @media only screen and (device-width : 812px) and (device-height : 375px) {
+            .swiper-slide>div img {
+                width: 40%;
+            }
+            .swiper-slide>div p{
+                width: 55%;
+            }
+        }
+
     </style>
 </head>
 <body>
