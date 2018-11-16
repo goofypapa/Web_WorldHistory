@@ -11,6 +11,7 @@
     <!--<link rel="stylesheet" href="css/animate.min.css">-->
     <!--<link rel="stylesheet" href="css/animate.css">-->
     <script src="js/font.js"></script>
+
     <style>
         #blackShade{
             width: 100%;
@@ -139,14 +140,16 @@
     <div class="swiper-wrapper">
         <div id="slide" class="swiper-slide swiper-no-swiping">
             <ul id="location">
-                <li>
+                <li style="margin-left: 1%;margin-top: 1.5%;">
                     <!--<img class="ani" swiper-animate-effect="bounceInRight" swiper-animate-duration="1.5s" swiper-animate-delay="0s" style="width: 733px;left: 104px;top:160px; opacity: 1" src="img/one.png" alt="">-->
-                    <img style="width: 733px;left: 104px;top:160px; " src="img/one.png" alt="">
+                    <!--<img style="width: 733px;left: 104px;top:160px; " src="img/one.png" alt="">-->
+                    <img src="img/one.png" style="width: 30%" alt="">
 
                 </li>
-                <li>
+                <li style="margin-left: -15%;margin-top: 5.5%;">
                     <!--<img class="ani" swiper-animate-effect="bounceInRight" swiper-animate-duration="1.5s" swiper-animate-delay="0.3s"   style="width: 744px;left: -259px;top:563px; opacity: 1" src="img/two.png" alt="">-->
-                    <img style="width: 744px;left: -259px;top:563px; " src="img/two.png" alt="">
+                    <!--<img style="width: 744px;left: -259px;top:563px; " src="img/two.png" alt="">-->
+                    <img src="img/two.png" style="width: 30%" alt="">
 
                 </li>
                 <li>
@@ -270,9 +273,9 @@
         });
         console.log($(obj));
     }
-    for(var i=0;i<imgWidth.length;i++){
-        adaptation(imgWidth[i]);
-    };
+    // for(var i=0;i<imgWidth.length;i++){
+    //     adaptation(imgWidth[i]);
+    // };
     window.onload=function(){
         if( window.history.length == 1 ) {
             $("#blackShade").fadeOut();
