@@ -139,10 +139,6 @@
 
 <!-- Initialize Swiper -->
 <script>
-    $("#back").click(function () {
-        window.location.href="index.html";
-    });
-
     //js获取url参数
     function GetQueryString(name){
         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -150,15 +146,56 @@
         if(r!=null)return  unescape(r[2]); return null;
     }
     //定义变量接收url参数，此处的变量名不能与url参数名相同,否则会报错不知道为啥
-    var myName=GetQueryString("index");
-    console.log(myName);
-    $("#year img").attr("src","http://www.dadpat.com/app/worldHistory/images/"+myName+"_title.png");
+    var cardId=GetQueryString("resourceId");
+    // var cardId="ef9411e8b1821d55f6b759e63e72f711";
+    var cardIdAll=[
+        ["ef9411e8b1821d55f6b759e681005194","one"],
+        ["ef9411e8b1821d55f6b759e668a804d3","two"],
+        ["ef9411e8b1821d55f6b759e60ed701df","three"],
+        ["ef9411e8b1821d55f6b759e69a829f65","four"],
+        ["ef8711e8b1821d55f6b759e6316c13ed","five"],
+        ["ef8711e8b1821d55f6b759e64705199e","six"],
+        ["ef8e11e8b1821d55f6b759e6bf7d89af","seven"],
+        ["ef8e11e8b1821d55f6b759e6f0bd1cc0","eight"],
+        ["ef9311e8b1821d55f6b759e6ed785fcd","nine"],
+        ["ef9311e8b1821d55f6b759e6fddc8a8e","ten"],
+        ["ef8711e8b1821d55f6b759e602a9199c","eleven"],
+        ["ef9411e8b1821d55f6b759e62a9a3f00","twelve"],
+        ["ef9411e8b1821d55f6b759e64f25b702","thirteen"],
+        ["ef9411e8b1821d55f6b759e63e72f711","fourteen"]
+    ];
+    console.log(cardId);
+    var  index;
+    $.each(cardIdAll,function(idx){
+        if(cardIdAll[idx][0] == cardId){
+            index=idx;
+            console.log(idx)//idx为数组下标
+        }
+    });
+    console.log(index);
+
+    console.log( cardId.length);
+    if( cardId.length==32){
+        cardId= cardIdAll[index][1];
+    }else{
+        cardId=cardId;
+    }
+    console.log(cardId);
+    window.onload=function(){
+        if(index){
+            swiper.slideTo(index,1);
+        }else{
+            swiper.slideTo(0,1);
+        }
+
+    }
+    $("#year img").attr("src","http://www.dadpat.com/app/worldHistory/images/"+cardId+"_title.png");
     // 获取图片内容
     $.ajax({
         type: "post",
         url: "http://www.dadpat.com/file/list.do",
         dataType: "jsonp",
-        data:{"path":"app/worldHistory/"+myName+"/img"},
+        data:{"path":"app/worldHistory/"+cardId+"/img"},
         async: true,
         success: function (data) {
             var imgList=data.data;
@@ -168,7 +205,7 @@
                 type: "post",
                 url: "http://www.dadpat.com/file/list.do",
                 dataType: "jsonp",
-                data:{"path":"app/worldHistory/"+myName+"/audio"},
+                data:{"path":"app/worldHistory/"+cardId+"/audio"},
                 async: true,
                 success: function (data) {
                     var audioList=data.data;
@@ -178,7 +215,7 @@
                         type: "post",
                         url: "http://www.dadpat.com/file/json.do",
                         dataType: "jsonp",
-                        data:{"path":"app/worldHistory/"+myName,"name":myName},
+                        data:{"path":"app/worldHistory/"+cardId,"name":cardId},
                         async: true,
                         success: function (data) {
                             var info=data.data.message;
@@ -226,18 +263,6 @@
                        allAudio[swiper.activeIndex+1].currentTime = 0;
                },
            }
-            // onSlideChangeEnd: function(swiper){
-            //     $("#play").attr("src","img/pause.png");
-            //     if(swiper.isBeginning){
-            //         allAudio[swiper.activeIndex+1].pause();
-            //         allAudio[swiper.activeIndex+1].currentTime = 0;
-            //     }else{
-            //     }
-            //     allAudio[swiper.activeIndex-1].pause();
-            //     allAudio[swiper.activeIndex-1].currentTime = 0;
-            //     allAudio[swiper.activeIndex+1].pause();
-            //     allAudio[swiper.activeIndex+1].currentTime = 0;
-            // }
 
         });
 
@@ -258,6 +283,19 @@
             }
         })
     }
+    $("#back").click(function () {
+        if(index){
+            console.log("111");
+            if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
+                window.location.href='goofypapa://back';
+            }else{
+                window.android.exitApp()
+            }
+        }else{
+            window.location.href = 'index.html';
+        }
+    });
 </script>
+
 </body>
 </html>
