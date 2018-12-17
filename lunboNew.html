@@ -284,17 +284,31 @@
         })
     }
     $("#back").click(function () {
-
         if(typeof(index) !== "undefined"){
-            alert("22222");
-            if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
+            if(typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
                 window.location.href='goofypapa://back';
-            }else{
-                window.android.exitApp()
+                return;
             }
-        }else{
-            window.location.href = 'index.html';
         }
+
+        //android ws
+        if( typeof(goofyPapa) !== "undefined" ){
+            goofyPapa.back();
+            return;
+        }
+        if(history.length) {
+            history.go(-1);
+            return;
+        }
+        // if(typeof(index) !== "undefined"){
+        //     if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
+        //         window.location.href='goofypapa://back';
+        //     }else{
+        //         window.android.exitApp()
+        //     }
+        // }else{
+        //     window.location.href = 'index.html';
+        // }
     });
 </script>
 
