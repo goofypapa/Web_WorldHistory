@@ -140,100 +140,135 @@
 
 <!-- Initialize Swiper -->
 <script>
-    //js获取url参数
-    function GetQueryString(name){
-        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-        var r = window.location.search.substr(1).match(reg);
-        if(r!=null)return  unescape(r[2]); return null;
-    }
-    //定义变量接收url参数，此处的变量名不能与url参数名相同,否则会报错不知道为啥
-    var cardId=GetQueryString("resourceId");
-    // var cardId="ef9411e8b1821d55f6b759e63e72f711";
-    var cardIdAll=[
-        ["ef9411e8b1821d55f6b759e681005194","one"],
-        ["ef9411e8b1821d55f6b759e668a804d3","two"],
-        ["ef9411e8b1821d55f6b759e60ed701df","three"],
-        ["ef9411e8b1821d55f6b759e69a829f65","four"],
-        ["ef8711e8b1821d55f6b759e6316c13ed","five"],
-        ["ef8711e8b1821d55f6b759e64705199e","six"],
-        ["ef8e11e8b1821d55f6b759e6bf7d89af","seven"],
-        ["ef8e11e8b1821d55f6b759e6f0bd1cc0","eight"],
-        ["ef9311e8b1821d55f6b759e6ed785fcd","nine"],
-        ["ef9311e8b1821d55f6b759e6fddc8a8e","ten"],
-        ["ef8711e8b1821d55f6b759e602a9199c","eleven"],
-        ["ef9411e8b1821d55f6b759e62a9a3f00","twelve"],
-        ["ef9411e8b1821d55f6b759e64f25b702","thirteen"],
-        ["ef9411e8b1821d55f6b759e63e72f711","fourteen"]
-    ];
-    console.log(cardId);
-    var  index;
-    $.each(cardIdAll,function(idx){
-        if(cardIdAll[idx][0] == cardId){
-            index=idx;
-            console.log(idx)//idx为数组下标
-        }
-    });
 
-    console.log( cardId.length);
-    if( cardId.length==32){
-        cardId= cardIdAll[index][1];
-    }else{
-        cardId=cardId;
-    }
-    console.log(cardId);
+
     window.onload=function(){
-        if(index){
-            swiper.slideTo(index,1);
-        }else{
-            swiper.slideTo(0,1);
+
+        //js获取url参数
+        function GetQueryString(name){
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
         }
+        //定义变量接收url参数，此处的变量名不能与url参数名相同,否则会报错不知道为啥
+        var cardId=GetQueryString("resourceId");
+        // var cardId="ef9411e8b1821d55f6b759e63e72f711";
+        var cardIdAll=[
+            ["ef9411e8b1821d55f6b759e681005194","one"],
+            ["ef9411e8b1821d55f6b759e668a804d3","two"],
+            ["ef9411e8b1821d55f6b759e60ed701df","three"],
+            ["ef9411e8b1821d55f6b759e69a829f65","four"],
+            ["ef8711e8b1821d55f6b759e6316c13ed","five"],
+            ["ef8711e8b1821d55f6b759e64705199e","six"],
+            ["ef8e11e8b1821d55f6b759e6bf7d89af","seven"],
+            ["ef8e11e8b1821d55f6b759e6f0bd1cc0","eight"],
+            ["ef9311e8b1821d55f6b759e6ed785fcd","nine"],
+            ["ef9311e8b1821d55f6b759e6fddc8a8e","ten"],
+            ["ef8711e8b1821d55f6b759e602a9199c","eleven"],
+            ["ef9411e8b1821d55f6b759e62a9a3f00","twelve"],
+            ["ef9411e8b1821d55f6b759e64f25b702","thirteen"],
+            ["ef9411e8b1821d55f6b759e63e72f711","fourteen"]
+        ];
+        console.log(cardId);
+        var  index;
+        $.each(cardIdAll,function(idx){
+            if(cardIdAll[idx][0] == cardId){
+                index=idx;
+                console.log(idx)//idx为数组下标
+            }
+        });
 
-    }
-    $("#year img").attr("src","http://www.dadpat.com/app/worldHistory/images/"+cardId+"_title.png");
+        console.log( cardId.length);
+        if( cardId.length==32){
+            cardId= cardIdAll[index][1];
+        }else{
+            cardId=cardId;
+        }
+        console.log(cardId);
+        window.onload=function(){
+            if(index){
+                swiper.slideTo(index,1);
+            }else{
+                swiper.slideTo(0,1);
+            }
 
+        }
+        $("#year img").attr("src","http://www.dadpat.com/app/worldHistory/images/"+cardId+"_title.png");
 
-    $("#back").click(function () {
-        // alert("返回");
-        if(typeof(index) !== "undefined"){
-            if(typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
-                window.location.href='goofypapa://back';
+        $("#back").click(function () {
+            // alert("返回");
+            if(typeof(index) !== "undefined"){
+                if(typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
+                    window.location.href='goofypapa://back';
+                    return;
+                }
+            }
+
+            //android ws
+            if( typeof(goofyPapa) !== "undefined" ){
+                goofyPapa.back();
                 return;
             }
-        }
+            if(history.length) {
+                history.go(-1);
+                return;
+            }
+            // if(typeof(index) !== "undefined"){
+            //     if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
+            //         window.location.href='goofypapa://back';
+            //     }else{
+            //         window.android.exitApp()
+            //     }
+            // }else{
+            //     window.location.href = 'index.html';
+            // }
+        });
 
-        //android ws
-        if( typeof(goofyPapa) !== "undefined" ){
-            goofyPapa.back();
-            return;
-        }
-        if(history.length) {
-            history.go(-1);
-            return;
-        }
-        // if(typeof(index) !== "undefined"){
-        //     if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
-        //         window.location.href='goofypapa://back';
-        //     }else{
-        //         window.android.exitApp()
-        //     }
-        // }else{
-        //     window.location.href = 'index.html';
-        // }
-    });
+        // 判断是浏览器还是手机端打开
+        var isMobile = /Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)
+        if(!isMobile){
+            // alert("PC端");
+            // 获取图片内容
+            // 获取文字内容
+            $.ajax({
+                type: "post",
+                url: "http://www.dadpat.com/file/json.do",
+                dataType: "jsonp",
+                data:{"path":"app/worldHistory/"+cardId,"name":cardId},
+                async: true,
+                success: function (data) {
+                    // 文字内容
+                    var info=data.data.message;
 
-    // 判断是浏览器还是手机端打开
-    var isMobile = /Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)
-    if(!isMobile){
-        // alert("PC端");
-        // 获取图片内容
-        // 获取文字内容
-        $.ajax({
-            type: "post",
-            url: "http://www.dadpat.com/file/json.do",
-            dataType: "jsonp",
-            data:{"path":"app/worldHistory/"+cardId,"name":cardId},
-            async: true,
-            success: function (data) {
+                    console.log(info);
+                    for(var i=0;i<info.length;i++){
+                        $(".swiper-wrapper").append('<div class="swiper-slide" ><div><img src="'+info[i].img+'" alt=""><p class="myText">'+info[i].text+'</p><input type="hidden" value="'+info[i].audio+'"/></div></div></div>');
+                    }
+                    var swiper = new Swiper('.swiper-container',{
+                        lazy:true,
+                        on:{
+                            slideChangeTransitionStart: function(){
+
+                                if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
+                                    goofypapaStopAllAndPlayAudio( $('.swiper-slide-active input')[0].value, function(){
+                                    } );
+                                }else if( typeof( window.android ) != "undefined" ) {
+                                    window.android.initMusic($('.swiper-slide-active input')[0].value);
+                                    window.android.startMusic();
+                                }else{
+                                    console.log( $('.swiper-slide-active input')[0].value );
+                                }
+                            },
+                        }
+
+                    });
+
+                }
+            });
+
+        }else{
+            // alert("手机端");
+            goofypapaAjax( "post", "http://www.dadpat.com/file/json.do", {"path":"app/worldHistory/"+cardId,"name":cardId}, function (data) {
                 // 文字内容
                 var info=data.data.message;
 
@@ -241,11 +276,13 @@
                 for(var i=0;i<info.length;i++){
                     $(".swiper-wrapper").append('<div class="swiper-slide" ><div><img src="'+info[i].img+'" alt=""><p class="myText">'+info[i].text+'</p><input type="hidden" value="'+info[i].audio+'"/></div></div></div>');
                 }
+                // 获取页面所有音频
+                // var allAudio=$("audio");
+                // console.log(allAudio);
                 var swiper = new Swiper('.swiper-container',{
                     lazy:true,
                     on:{
                         slideChangeTransitionStart: function(){
-
                             if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
                                 goofypapaStopAllAndPlayAudio( $('.swiper-slide-active input')[0].value, function(){
                                 } );
@@ -259,59 +296,23 @@
                     }
 
                 });
+            }, function(){
 
-            }
-        });
-
-    }else{
-        // alert("手机端");
-        goofypapaAjax( "post", "http://www.dadpat.com/file/json.do", {"path":"app/worldHistory/"+cardId,"name":cardId}, function (data) {
-            // 文字内容
-            var info=data.data.message;
-
-            console.log(info);
-            for(var i=0;i<info.length;i++){
-                $(".swiper-wrapper").append('<div class="swiper-slide" ><div><img src="'+info[i].img+'" alt=""><p class="myText">'+info[i].text+'</p><input type="hidden" value="'+info[i].audio+'"/></div></div></div>');
-            }
-            // 获取页面所有音频
-            // var allAudio=$("audio");
-            // console.log(allAudio);
-            var swiper = new Swiper('.swiper-container',{
-                lazy:true,
-                on:{
-                    slideChangeTransitionStart: function(){
-                        if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
-                            goofypapaStopAllAndPlayAudio( $('.swiper-slide-active input')[0].value, function(){
-                            } );
-                        }else if( typeof( window.android ) != "undefined" ) {
-                            window.android.initMusic($('.swiper-slide-active input')[0].value);
-                            window.android.startMusic();
-                        }else{
-                            console.log( $('.swiper-slide-active input')[0].value );
-                        }
-                    },
-                }
-
-            });
-        }, function(){
-
-        } )
-    }
-</script>
-<script>
-    $("#play").click(function(){
-
-        if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
-            goofypapaStopAllAndPlayAudio( $('.swiper-slide-active input')[0].value, function(){
-            } );
-        }else if( typeof( window.android ) != "undefined" ) {
-            window.android.initMusic($('.swiper-slide-active input')[0].value);
-            window.android.startMusic();
-        }else{
-            console.log( $('.swiper-slide-active input')[0].value );
+            } )
         }
-    })
-    window.onload=function(){
+        $("#play").click(function(){
+
+            if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
+                goofypapaStopAllAndPlayAudio( $('.swiper-slide-active input')[0].value, function(){
+                } );
+            }else if( typeof( window.android ) != "undefined" ) {
+                window.android.initMusic($('.swiper-slide-active input')[0].value);
+                window.android.startMusic();
+            }else{
+                console.log( $('.swiper-slide-active input')[0].value );
+            }
+        })
+
         $("#bj-shade").fadeOut();
 
     }
