@@ -135,6 +135,7 @@
 
 <!-- Swiper JS -->
 <script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/goofypapaApi.js"></script>
 <script src="js/swiper-4.3.3.min.js"></script>
 
 <!-- Initialize Swiper -->
@@ -172,7 +173,6 @@
             console.log(idx)//idx为数组下标
         }
     });
-    console.log(index);
 
     console.log( cardId.length);
     if( cardId.length==32){
@@ -190,100 +190,10 @@
 
     }
     $("#year img").attr("src","http://www.dadpat.com/app/worldHistory/images/"+cardId+"_title.png");
-    // 获取图片内容
-    $.ajax({
-        type: "post",
-        url: "http://www.dadpat.com/file/list.do",
-        dataType: "jsonp",
-        data:{"path":"app/worldHistory/"+cardId+"/img"},
-        async: true,
-        success: function (data) {
-            var imgList=data.data;
-            console.log(imgList);
-            // 获取声音
-            $.ajax({
-                type: "post",
-                url: "http://www.dadpat.com/file/list.do",
-                dataType: "jsonp",
-                data:{"path":"app/worldHistory/"+cardId+"/audio"},
-                async: true,
-                success: function (data) {
-                    var audioList=data.data;
-                    console.log(audioList);
-                    // 获取文字内容
-                    $.ajax({
-                        type: "post",
-                        url: "http://www.dadpat.com/file/json.do",
-                        dataType: "jsonp",
-                        data:{"path":"app/worldHistory/"+cardId,"name":cardId},
-                        async: true,
-                        success: function (data) {
-                            var info=data.data.message;
-                            console.log(info);
-                            for(var i=0,imgPath,audioPath;i<imgList.length;i++){
-                                imgPath=imgList[i].split('\\').join('/');
-                                audioPath=audioList[i].split('\\').join('/');
-                                // $(".swiper-wrapper").append('<div class="swiper-slide" style="background-image:url(http://www.dadpat.com/'+imgPath+')"><img class="videoBtn" src="images/xq_button_stop.png" alt=""><audio class="myVideo" src="http://www.dadpat.com/'+audioPath+'"></audio><p class="myText">'+info[i].text+'</p></div>')
-                                $(".swiper-wrapper").append('<div class="swiper-slide" ><div><img src="http://www.dadpat.com/'+imgPath+'" alt=""><p class="myText">'+info[i].text+'</p><audio class="myVideo" src="http://www.dadpat.com/'+audioPath+'"></audio></div></div></div>');
-                                console.log("http://www.dadpat.com"+imgPath);
-                                console.log(audioPath);
-                            }
-                        }
-                    });
-                }
-            })
-
-            console.log(data);
 
 
-        }
-    });
-
-
-</script>
-<script>
-    window.onload=function(){
-        $("#bj-shade").fadeOut();
-        // 获取页面所有音频
-        var allAudio=$("audio");
-        console.log(allAudio);
-        var swiper = new Swiper('.swiper-container',{
-            lazy:true,
-           on:{
-               slideChangeTransitionStart: function(){
-                   $("#play").attr("src","img/pause.png");
-                       if(swiper.isBeginning){
-                           allAudio[swiper.activeIndex+1].pause();
-                           allAudio[swiper.activeIndex+1].currentTime = 0;
-                       }else{
-                       }
-                       allAudio[swiper.activeIndex-1].pause();
-                       allAudio[swiper.activeIndex-1].currentTime = 0;
-                       allAudio[swiper.activeIndex+1].pause();
-                       allAudio[swiper.activeIndex+1].currentTime = 0;
-               },
-           }
-
-        });
-
-        $("#play").click(function(){
-            var audio=allAudio[swiper.activeIndex];
-            if(allAudio[swiper.activeIndex].paused){
-                allAudio[swiper.activeIndex].play();
-                $("#play").attr("src","img/play.png");
-                console.log(audio);
-                audio.addEventListener('ended', function () {
-                    $("#play").attr("src","img/pause.png");
-                }, false);
-
-            }else{
-                allAudio[swiper.activeIndex].pause();
-                allAudio[swiper.activeIndex].currentTime=0;
-                $("#play").attr("src","img/pause.png");
-            }
-        })
-    }
     $("#back").click(function () {
+        // alert("返回");
         if(typeof(index) !== "undefined"){
             if(typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
                 window.location.href='goofypapa://back';
@@ -310,6 +220,102 @@
         //     window.location.href = 'index.html';
         // }
     });
+
+    // 判断是浏览器还是手机端打开
+    var isMobile = /Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)
+    if(!isMobile){
+        // alert("PC端");
+        // 获取图片内容
+        // 获取文字内容
+        $.ajax({
+            type: "post",
+            url: "http://www.dadpat.com/file/json.do",
+            dataType: "jsonp",
+            data:{"path":"app/worldHistory/"+cardId,"name":cardId},
+            async: true,
+            success: function (data) {
+                // 文字内容
+                var info=data.data.message;
+
+                console.log(info);
+                for(var i=0;i<info.length;i++){
+                    $(".swiper-wrapper").append('<div class="swiper-slide" ><div><img src="'+info[i].img+'" alt=""><p class="myText">'+info[i].text+'</p><input type="hidden" value="'+info[i].audio+'"/></div></div></div>');
+                }
+                var swiper = new Swiper('.swiper-container',{
+                    lazy:true,
+                    on:{
+                        slideChangeTransitionStart: function(){
+
+                            if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
+                                goofypapaStopAllAndPlayAudio( $('.swiper-slide-active input')[0].value, function(){
+                                } );
+                            }else if( typeof( window.android ) != "undefined" ) {
+                                window.android.initMusic($('.swiper-slide-active input')[0].value);
+                                window.android.startMusic();
+                            }else{
+                                console.log( $('.swiper-slide-active input')[0].value );
+                            }
+                        },
+                    }
+
+                });
+
+            }
+        });
+
+    }else{
+        // alert("手机端");
+        goofypapaAjax( "post", "http://www.dadpat.com/file/json.do", {"path":"app/worldHistory/"+cardId,"name":cardId}, function (data) {
+            // 文字内容
+            var info=data.data.message;
+
+            console.log(info);
+            for(var i=0;i<info.length;i++){
+                $(".swiper-wrapper").append('<div class="swiper-slide" ><div><img src="'+info[i].img+'" alt=""><p class="myText">'+info[i].text+'</p><input type="hidden" value="'+info[i].audio+'"/></div></div></div>');
+            }
+            // 获取页面所有音频
+            // var allAudio=$("audio");
+            // console.log(allAudio);
+            var swiper = new Swiper('.swiper-container',{
+                lazy:true,
+                on:{
+                    slideChangeTransitionStart: function(){
+                        if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
+                            goofypapaStopAllAndPlayAudio( $('.swiper-slide-active input')[0].value, function(){
+                            } );
+                        }else if( typeof( window.android ) != "undefined" ) {
+                            window.android.initMusic($('.swiper-slide-active input')[0].value);
+                            window.android.startMusic();
+                        }else{
+                            console.log( $('.swiper-slide-active input')[0].value );
+                        }
+                    },
+                }
+
+            });
+        }, function(){
+
+        } )
+    }
+</script>
+<script>
+    $("#play").click(function(){
+
+        if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
+            goofypapaStopAllAndPlayAudio( $('.swiper-slide-active input')[0].value, function(){
+            } );
+        }else if( typeof( window.android ) != "undefined" ) {
+            window.android.initMusic($('.swiper-slide-active input')[0].value);
+            window.android.startMusic();
+        }else{
+            console.log( $('.swiper-slide-active input')[0].value );
+        }
+    })
+    window.onload=function(){
+        $("#bj-shade").fadeOut();
+
+    }
+
 </script>
 
 </body>
