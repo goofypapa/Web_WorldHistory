@@ -299,17 +299,33 @@
     }
 </script>
 <script>
+    var count=0;
     $("#play").click(function(){
-
-        if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
-            goofypapaStopAllAndPlayAudio( $('.swiper-slide-active input')[0].value, function(){
-            } );
-        }else if( typeof( window.android ) != "undefined" ) {
-            window.android.initMusic($('.swiper-slide-active input')[0].value);
-            window.android.startMusic();
-        }else{
-            console.log( $('.swiper-slide-active input')[0].value );
+        if(count==0){
+            if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
+                goofypapaStopAllAndPlayAudio( $('.swiper-slide-active input')[0].value, function(){
+                } );
+            }else if( typeof( window.android ) != "undefined" ) {
+                window.android.initMusic($('.swiper-slide-active input')[0].value);
+                window.android.startMusic();
+            }else{
+                console.log( $('.swiper-slide-active input')[0].value );
+            }
+            $("#play").attr("src","img/play.png");
+            count=1;
+        }else {
+            count=0;
+            if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
+                goofypapaStopAudio( $('.swiper-slide-active input')[0].value);
+            }else if( typeof( window.android ) != "undefined" ) {
+                window.android.initMusic($('.swiper-slide-active input')[0].value);
+                window.android.stoptMusic();
+            }else{
+                console.log( "停止播放"+$('.swiper-slide-active input')[0].value );
+            }
+            $("#play").attr("src","img/pause.png");
         }
+
     })
     window.onload=function(){
         $("#bj-shade").fadeOut();
