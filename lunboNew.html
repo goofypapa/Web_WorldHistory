@@ -70,10 +70,10 @@
         }
         #year img{
             text-align: center;
-            height: 80%;
+            height: 60%;
         }
         #back,#play{
-            width: 3rem;
+            width: 2rem;
         }
         #play{
             right: 4%;
@@ -86,7 +86,8 @@
         }
         .swiper-slide>div img{
             float: left;
-            width: 55%;
+            /*width: 55%;*/
+            height: 70%;
             background:url("img/img-border.png")110rem 10rem no-repeat;
             /*border-image: url("img/img-border.png")100% 100% round;*/
         }
@@ -94,7 +95,7 @@
             float: right;
             width: 40%;
             margin-top: 0;
-            font-size: 1.4rem;
+            font-size: 1rem;
             line-height: 2rem;
             text-align: justify;
             height: 70%;
@@ -225,6 +226,7 @@
         });
 
         // 判断是浏览器还是手机端打开
+        // if(!(typeof( goofypapaGame ) != "undefined" && goofypapaGame )||!(typeof( window.android ) != "undefined")){
         var isMobile = /Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)
         if(!isMobile){
             // alert("PC端");
