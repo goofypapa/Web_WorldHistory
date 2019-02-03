@@ -194,7 +194,7 @@
             }
 
         }
-        $("#year img").attr("src","http://www.dadpat.com/app/worldHistory/images/"+cardId+"_title.png");
+        $("#year img").attr("src","https://www.goofypapa.com/app/worldHistory/images/"+cardId+"_title.png");
 
         $("#back").click(function () {
             // alert("返回");
@@ -234,7 +234,7 @@
             // 获取文字内容
             $.ajax({
                 type: "post",
-                url: "http://www.dadpat.com/file/json.do",
+                url: "https://www.goofypapa.com/file/json.do",
                 dataType: "jsonp",
                 data:{"path":"app/worldHistory/"+cardId,"name":cardId},
                 async: true,
@@ -272,7 +272,7 @@
 
         }else{
             // alert("手机端");
-            goofypapaAjax( "post", "http://www.dadpat.com/file/json.do", {"path":"app/worldHistory/"+cardId,"name":cardId}, function (data) {
+            goofypapaAjax( "post", "https://www.goofypapa.com/file/json.do", {"path":"app/worldHistory/"+cardId,"name":cardId}, function (data) {
                 // 文字内容
                 var info=data.data.message;
 
