@@ -34,7 +34,6 @@
             text-align: center;
             font-size: 18px;
             /*background: #fff;*/
-
             /* Center slide text vertically */
             display: -webkit-box;
             display: -ms-flexbox;
@@ -100,7 +99,6 @@
             text-align: justify;
             height: 70%;
             overflow-y: auto;
-
         }
         @media only screen and (device-width : 375px) and (device-height : 812px) {
             .swiper-slide>div img {
@@ -117,7 +115,6 @@
             background-size: cover;
             background: url("img/two-bj.jpg");
         }
-
     </style>
 </head>
 <body>
@@ -141,10 +138,7 @@
 
 <!-- Initialize Swiper -->
 <script>
-
-
     window.onload=function(){
-
         //js获取url参数
         function GetQueryString(name){
             var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -178,7 +172,6 @@
                 console.log(idx)//idx为数组下标
             }
         });
-
         console.log( cardId.length);
         if( cardId.length==32){
             cardId= cardIdAll[index][1];
@@ -192,10 +185,8 @@
             }else{
                 swiper.slideTo(0,1);
             }
-
         }
         $("#year img").attr("src","https://www.goofypapa.com/app/worldHistory/images/"+cardId+"_title.png");
-
         $("#back").click(function () {
             // alert("返回");
             if(typeof(index) !== "undefined"){
@@ -204,7 +195,6 @@
                     return;
                 }
             }
-
             //android ws
             if( typeof(goofyPapa) !== "undefined" ){
                 goofyPapa.back();
@@ -224,7 +214,6 @@
             //     window.location.href = 'index.html';
             // }
         });
-
         // 判断是浏览器还是手机端打开
         // if(!(typeof( goofypapaGame ) != "undefined" && goofypapaGame )||!(typeof( window.android ) != "undefined")){
         var isMobile = /Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)
@@ -241,7 +230,6 @@
                 success: function (data) {
                     // 文字内容
                     var info=data.data.message;
-
                     console.log(info);
                     for(var i=0;i<info.length;i++){
                         $(".swiper-wrapper").append('<div class="swiper-slide" ><div><img src="'+info[i].img+'" alt=""><p class="myText">'+info[i].text+'</p><input type="hidden" value="'+info[i].audio+'"/></div></div></div>');
@@ -250,7 +238,6 @@
                         lazy:true,
                         on:{
                             slideChangeTransitionStart: function(){
-
                                 if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
                                     goofypapaStopAllAndPlayAudio( $('.swiper-slide-active input')[0].value, function(){
                                         $("#play").attr("src","img/pause.png");
@@ -264,18 +251,14 @@
                                 $("#play").attr("src","img/play.png");
                             },
                         }
-
                     });
-
                 }
             });
-
         }else{
             // alert("手机端");
             goofypapaAjax( "post", "https://www.goofypapa.com/file/json.do", {"path":"app/worldHistory/"+cardId,"name":cardId}, function (data) {
                 // 文字内容
                 var info=data.data.message;
-
                 console.log(info);
                 for(var i=0;i<info.length;i++){
                     $(".swiper-wrapper").append('<div class="swiper-slide" ><div><img src="'+info[i].img+'" alt=""><p class="myText">'+info[i].text+'</p><input type="hidden" value="'+info[i].audio+'"/></div></div></div>');
@@ -300,18 +283,30 @@
                             $("#play").attr("src","img/play.png");
                         },
                     }
-
                 });
             }, function(){
-
             } )
         }
         var count=0;
         $("#play").click(function(){
-            if(count==0){
+            // console.log($("#play"))
+            if(($("#play")[0].src).indexOf("img/play.png") != -1 ){
+                if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
+                    goofypapaStopAllAudio();
+                    // goofypapaStopAudio( $('.swiper-slide-active input')[0].value);
+                }else if( typeof( window.android ) != "undefined" ) {
+                    window.android.initMusic($('.swiper-slide-active input')[0].value);
+                    window.android.stoptMusic();
+                }else{
+                    console.log( "停止播放"+$('.swiper-slide-active input')[0].value );
+                }
+                $("#play").attr("src","img/pause.png");
+            }else{
                 if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
                     goofypapaStopAllAndPlayAudio( $('.swiper-slide-active input')[0].value, function(){
                         $("#play").attr("src","img/pause.png");
+                        // count = !count;
+                        // alert("!count")
                     } );
                 }else if( typeof( window.android ) != "undefined" ) {
                     window.android.initMusic($('.swiper-slide-active input')[0].value);
@@ -320,27 +315,11 @@
                     console.log( $('.swiper-slide-active input')[0].value );
                 }
                 $("#play").attr("src","img/play.png");
-                count=1;
-            }else {
-                count=0;
-                if( typeof( goofypapaGame ) != "undefined" && goofypapaGame ){
-                    goofypapaStopAudio( $('.swiper-slide-active input')[0].value);
-                }else if( typeof( window.android ) != "undefined" ) {
-                    window.android.initMusic($('.swiper-slide-active input')[0].value);
-                    window.android.stoptMusic();
-                }else{
-                    console.log( "停止播放"+$('.swiper-slide-active input')[0].value );
-                }
-                $("#play").attr("src","img/pause.png");
             }
-
         })
 
-        
         $("#bj-shade").fadeOut();
-
     }
-
 </script>
 
 </body>
